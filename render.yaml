@@ -3,15 +3,14 @@ services:
   - type: web
     name: gifpocket
     runtime: node
-    # Free instances sleep after ~15 min idle (first visit then waits ~1 min).
-    # Use starter or higher for a real launch.
-    plan: starter
-    region: oregon
+    # Free: sleeps after ~15 min without visitors (next visit waits ~1 min to wake),
+    # 0.1 CPU and 512 MB RAM, so conversions are slower. Switch to "starter" (~$7/mo)
+    # for always-on and faster GIFs, and then raise FFMPEG_JOBS / remove FFMPEG_THREADS.
+    plan: free
+    region: virginia
     buildCommand: npm ci --omit=dev
     startCommand: npm start
     healthCheckPath: /healthz
-    # Caches, rate limits and finished GIFs live in memory, so keep one instance.
-    numInstances: 1
     domains:
       - gifpocket.fun
       - www.gifpocket.fun
@@ -25,3 +24,8 @@ services:
       # Render's proxy puts the visitor's IP in X-Forwarded-For.
       - key: TRUST_PROXY
         value: "true"
+      # Keep memory use inside the free plan's 512 MB: one conversion at a time, one thread.
+      - key: FFMPEG_JOBS
+        value: "1"
+      - key: FFMPEG_THREADS
+        value: "1"

@@ -28,7 +28,11 @@ const MIN_WIDTH = 64;
 const STICKER_SIZE = 512; // WhatsApp / Telegram sticker canvas
 // Last-resort steps: GIF palette size, or WebP quality.
 const LEVELS = { gif: [256, 128, 64, 32], webp: [75, 60, 45, 30] };
-const MAX_JOBS = Math.max(1, Math.min(4, os.cpus().length - 1));
+// How many conversions run at once, and how many threads each ffmpeg may use. Small hosts
+// (e.g. Render free: 0.1 CPU, 512 MB) should set FFMPEG_JOBS=1 and FFMPEG_THREADS=1, because
+// os.cpus() there reports the whole machine, not the slice this app gets.
+const MAX_JOBS = Number(process.env.FFMPEG_JOBS) || Math.max(1, Math.min(4, os.cpus().length - 1));
+const THREAD_ARGS = process.env.FFMPEG_THREADS ? ['-threads', String(Number(process.env.FFMPEG_THREADS) || 1)] : [];
 const MAX_QUEUE = 20;
 const UPLOAD_KEEP_MS = 30 * 60 * 1000;
 
@@ -287,7 +291,7 @@ export async function makeGif(opts) {
         if (opts.fit === 'square') f.push("crop='min(iw,ih)':'min(iw,ih)'");
         if (width < baseWidth) f.push(`scale=${width}:-2:flags=lanczos`);
       }
-      const common = ['-hide_banner', '-loglevel', 'error', ...(opts.start > 0 ? ['-ss', String(opts.start)] : []), '-t', String(seconds), '-i', input, '-an'];
+      const common = ['-hide_banner', '-loglevel', 'error', ...(opts.start > 0 ? ['-ss', String(opts.start)] : []), '-t', String(seconds), '-i', input, '-an', ...THREAD_ARGS];
       if (opts.format === 'webp') {
         await runFfmpeg([
           ...common,
