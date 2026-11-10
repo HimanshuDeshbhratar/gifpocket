@@ -77,4 +77,4 @@ app.use((err, _req, res, _next) => {
   res.status(err.status ?? 500).json({ error: err.expose ? err.message : 'Something went wrong. Please try again.' });
 });
 
-app.listen(PORT, () => console.log(`Loopsave running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Gifpocket running at http://localhost:${PORT}`));

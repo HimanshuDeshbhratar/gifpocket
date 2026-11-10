@@ -45,7 +45,8 @@ h1, h2 { line-height: 1.15; letter-spacing: -0.02em; }
 
 .top, main, .foot { max-width: 880px; margin: 0 auto; padding: 0 16px; }
 .top { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-.brand { display: flex; gap: 10px; align-items: center; font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; }
+.brand { display: flex; gap: 10px; align-items: center; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+.brand-gif { color: var(--accent); }
 .top nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-size: 0.95rem; }
 .top nav a:hover { color: var(--text); }
 

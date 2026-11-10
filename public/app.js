@@ -7,7 +7,7 @@ const statusEl = $('#status');
 const resultEl = $('#result');
 const fileInput = $('#file');
 const dropzone = $('#convert');
-const HISTORY_KEY = 'loopsave:history';
+const HISTORY_KEY = 'gifpocket:history';
 const MAX_RECENT = 12; // unpinned items kept; pinned ones are always kept
 const MAX_SECONDS = 120; // must match MAX_SECONDS on the server
 const MAX_UPLOAD = 100 * 1024 * 1024;
@@ -624,7 +624,7 @@ else
 $('#bookmarklet').href = `javascript:location.href='${location.origin}/?url='+encodeURIComponent(location.href)`;
 $('#bookmarklet').addEventListener('click', (e) => {
   e.preventDefault();
-  setStatus('Drag the "⤓ Loopsave" button to your bookmarks bar, then click it while viewing a tweet.');
+  setStatus('Drag the "⤓ Gifpocket" button to your bookmarks bar, then click it while viewing a tweet.');
 });
 
 renderHistory();

@@ -3,15 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Loopsave — Twitter / X GIF Downloader &amp; Video to GIF</title>
+  <title>Gifpocket — Twitter / X GIF Downloader &amp; Video to GIF</title>
   <meta name="description" content="Paste a tweet link to download its GIF as a real .gif file in one click. Convert your own videos to GIF or WebP, make Discord emoji and WhatsApp stickers. Free, no sign-up." />
   <meta name="theme-color" content="#6d5dfc" />
+  <meta name="application-name" content="Gifpocket" />
+  <meta property="og:site_name" content="Gifpocket" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Gifpocket: save any Twitter / X GIF in one click" />
+  <meta property="og:description" content="Paste a tweet link, get a real .gif. Also converts your own videos to GIF or WebP, Discord emoji and WhatsApp stickers. Free, no sign-up." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Gifpocket: save any Twitter / X GIF in one click" />
+  <meta name="twitter:description" content="Paste a tweet link, get a real .gif. Free, no sign-up." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/styles.css?v=8" />
+  <link rel="stylesheet" href="/styles.css?v=9" />
 </head>
 <body>
   <header class="top">
-    <a class="brand" href="/"><img src="/favicon.svg" alt="" width="28" height="28" /> Loopsave</a>
+    <a class="brand" href="/" aria-label="Gifpocket home"><img src="/favicon.svg" alt="" width="30" height="30" /> <span><span class="brand-gif">Gif</span>pocket</span></a>
     <nav><a href="#convert">Video to GIF</a><a href="#how">How it works</a><a href="#faq">FAQ</a></nav>
   </header>
 
@@ -56,7 +64,7 @@
         <li><b>Download GIF</b>: one click gets a real .gif (max 5 MB). Want it sharper? Try WebP. Need a Discord emoji or WhatsApp sticker? Open “Customize &amp; presets”.</li>
       </ol>
       <p class="tip">Tip: drag this to your bookmarks bar, then click it on any tweet:
-        <a id="bookmarklet" class="bookmarklet" href="#">⤓ Loopsave</a></p>
+        <a id="bookmarklet" class="bookmarklet" href="#">⤓ Gifpocket</a></p>
     </section>
 
     <section id="faq" class="info">
@@ -78,7 +86,7 @@
     </section>
   </main>
 
-  <footer class="foot">Loopsave is not affiliated with X Corp.</footer>
+  <footer class="foot">Gifpocket is not affiliated with X Corp.</footer>
 
   <template id="tpl-result">
     <article class="tweet">
@@ -177,6 +185,6 @@
     </div>
   </template>
 
-  <script src="/app.js?v=8" type="module"></script>
+  <script src="/app.js?v=9" type="module"></script>
 </body>
 </html>

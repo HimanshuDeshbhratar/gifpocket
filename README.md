@@ -1,4 +1,4 @@
-# Loopsave
+# Gifpocket
 
 Paste a tweet link → download its GIF (as MP4 or a real `.gif`), video or images.
 

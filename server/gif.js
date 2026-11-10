@@ -133,7 +133,7 @@ function probe(file) {
 // ---------- uploads (the user's own videos / GIFs) ----------
 
 const uploads = new Map(); // id -> { file, at }
-const uploadRoot = path.join(os.tmpdir(), 'loopsave-uploads');
+const uploadRoot = path.join(os.tmpdir(), 'gifpocket-uploads');
 
 /** Streams the request body to disk (max 100 MB) and checks it really is a video or GIF. */
 export async function saveUpload(req) {
@@ -240,7 +240,7 @@ export function getGifFile(id) {
  */
 export async function makeGif(opts) {
   await acquire();
-  const dir = await mkdtemp(path.join(os.tmpdir(), 'loopsave-'));
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'gifpocket-'));
   const cleanup = () => rm(dir, { recursive: true, force: true }).catch(() => {});
   try {
     let input;

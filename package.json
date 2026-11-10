@@ -1,5 +1,5 @@
 {
-  "name": "loopsave",
+  "name": "gifpocket",
   "version": "0.1.0",
   "private": true,
   "description": "Download GIFs, videos and images from tweet links, and convert them to real .gif files.",

@@ -136,7 +136,7 @@ async function fromSyndication(tweetId) {
 
 async function fromFxTwitter(tweetId) {
   const res = await fetch(`https://api.fxtwitter.com/i/status/${tweetId}`, {
-    headers: { 'user-agent': 'loopsave/0.1', accept: 'application/json' },
+    headers: { 'user-agent': 'gifpocket/0.1', accept: 'application/json' },
     signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) throw new Error(`fxtwitter ${res.status}`);
