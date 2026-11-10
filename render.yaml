@@ -1,0 +1,27 @@
+# Render Blueprint: Dashboard → New → Blueprint → pick this repo.
+services:
+  - type: web
+    name: gifpocket
+    runtime: node
+    # Free instances sleep after ~15 min idle (first visit then waits ~1 min).
+    # Use starter or higher for a real launch.
+    plan: starter
+    region: oregon
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    # Caches, rate limits and finished GIFs live in memory, so keep one instance.
+    numInstances: 1
+    domains:
+      - gifpocket.fun
+      - www.gifpocket.fun
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: CANONICAL_HOST
+        value: gifpocket.fun
+      # Render's proxy puts the visitor's IP in X-Forwarded-For.
+      - key: TRUST_PROXY
+        value: "true"

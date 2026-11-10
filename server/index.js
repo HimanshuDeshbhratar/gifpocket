@@ -8,10 +8,35 @@ import { rateLimit } from './rateLimit.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3000;
+// e.g. "gifpocket.fun": requests for www.gifpocket.fun are redirected there.
+const CANONICAL_HOST = process.env.CANONICAL_HOST;
+
+// How many proxies sit in front of the app (hosting load balancer, Cloudflare…), so
+// req.ip is the visitor's real address for rate limiting. A number means "hops".
+function trustProxySetting(v) {
+  if (v === undefined || v === '') return 'loopback';
+  if (/^\d+$/.test(v)) return Number(v);
+  if (v === 'true') return true;
+  return v;
+}
 
 const app = express();
 app.disable('x-powered-by');
-app.set('trust proxy', process.env.TRUST_PROXY ?? 'loopback');
+app.set('trust proxy', trustProxySetting(process.env.TRUST_PROXY));
+
+app.get('/healthz', (_req, res) => res.type('text').send('ok'));
+
+app.use((req, res, next) => {
+  if (CANONICAL_HOST && req.hostname === `www.${CANONICAL_HOST}`) {
+    return res.redirect(301, `https://${CANONICAL_HOST}${req.originalUrl}`);
+  }
+  res.setHeader('x-content-type-options', 'nosniff');
+  res.setHeader('referrer-policy', 'strict-origin-when-cross-origin');
+  res.setHeader('x-frame-options', 'SAMEORIGIN');
+  res.setHeader('permissions-policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
+
 app.use(express.json({ limit: '10kb' }));
 // HTML is never cached, so a release is picked up right away; CSS/JS links carry a ?v= tag
 // in index.html — bump it whenever those files change.
