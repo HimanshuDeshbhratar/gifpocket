@@ -1,0 +1,19 @@
+{
+  "name": "loopsave",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Download GIFs, videos and images from tweet links, and convert them to real .gif files.",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ffmpeg-static": "^5.2.0"
+  }
+}

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loopsave — Twitter / X GIF Downloader &amp; Video to GIF</title>
+  <meta name="description" content="Paste a tweet link to download its GIF as a real .gif file in one click. Convert your own videos to GIF or WebP, make Discord emoji and WhatsApp stickers. Free, no sign-up." />
+  <meta name="theme-color" content="#6d5dfc" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css?v=8" />
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/"><img src="/favicon.svg" alt="" width="28" height="28" /> Loopsave</a>
+    <nav><a href="#convert">Video to GIF</a><a href="#how">How it works</a><a href="#faq">FAQ</a></nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Download Twitter&nbsp;/&nbsp;X GIFs</h1>
+      <p class="sub">Paste a tweet link and get a real <code>.gif</code> file you can use anywhere, in one click. MP4, videos and images work too.</p>
+
+      <form id="form" class="search" autocomplete="off">
+        <input id="url" name="url" type="url" inputmode="url" required
+               placeholder="https://x.com/user/status/1234567890" aria-label="Tweet link" />
+        <button type="button" id="clear" class="clear" title="Clear (Esc)" aria-label="Clear link and results" hidden>✕</button>
+        <button type="button" id="paste" class="ghost" title="Paste from clipboard">Paste</button>
+        <button type="submit" id="go" class="primary">Get media</button>
+      </form>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <label id="convert" class="dropzone" for="file">
+        <input id="file" type="file" accept="video/*,image/gif" hidden />
+        <span class="dz-icon" aria-hidden="true">⬆</span>
+        <span><b>Convert your own video or GIF</b><br />
+          <small>Drop a file here or click to choose. MP4, MOV, WebM or GIF, up to 100 MB.</small></span>
+        <span class="dz-bar" hidden><span></span></span>
+      </label>
+    </section>
+
+    <section id="result" class="result" hidden></section>
+
+    <section id="history-wrap" class="history" hidden>
+      <div class="row-between">
+        <h2>Recent</h2>
+        <button id="clear-history" class="link">Clear</button>
+      </div>
+      <ul id="history"></ul>
+    </section>
+
+    <section id="how" class="info">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><b>Copy the link</b>: tap Share → Copy link on any tweet with a GIF, video or image.</li>
+        <li><b>Paste it here</b>: we find every piece of media in the tweet.</li>
+        <li><b>Download GIF</b>: one click gets a real .gif (max 5 MB). Want it sharper? Try WebP. Need a Discord emoji or WhatsApp sticker? Open “Customize &amp; presets”.</li>
+      </ol>
+      <p class="tip">Tip: drag this to your bookmarks bar, then click it on any tweet:
+        <a id="bookmarklet" class="bookmarklet" href="#">⤓ Loopsave</a></p>
+    </section>
+
+    <section id="faq" class="info">
+      <h2>FAQ</h2>
+      <details><summary>Is it a real GIF?</summary>
+        <p>Yes. X turns every uploaded GIF into a small MP4 video and throws the original away, so we convert it back into a real .gif for you. If you only need it for a video app, the MP4 is smaller and sharper.</p></details>
+      <details><summary>Why is my GIF smaller than the original?</summary>
+        <p>Every GIF is kept under 5 MB so it's easy to share and upload. Short clips keep their original size and smoothness. For longer ones we lower the frame rate and size just enough to fit, and never cut the length. For a sharper result, choose WebP or trim the clip in “Customize &amp; presets”.</p></details>
+      <details><summary>What is WebP?</summary>
+        <p>A modern animated image format. It looks like a GIF but is usually about a third of the size, so it stays sharp. It works in all modern browsers, WhatsApp, Telegram, Discord and most apps. Some older apps only accept .gif.</p></details>
+      <details><summary>Can I convert my own videos?</summary>
+        <p>Yes. Drop a video or GIF into “Convert your own video or GIF”. Your file is deleted from our server within 30 minutes.</p></details>
+      <details><summary>Does it work with private tweets?</summary>
+        <p>No. Only public tweets can be downloaded.</p></details>
+      <details><summary>Can I download from other apps?</summary>
+        <p>Support for more platforms is coming.</p></details>
+      <details><summary>Who owns the media?</summary>
+        <p>The original creator does. Please respect their rights and only reuse content you're allowed to.</p></details>
+    </section>
+  </main>
+
+  <footer class="foot">Loopsave is not affiliated with X Corp.</footer>
+
+  <template id="tpl-result">
+    <article class="tweet">
+      <div class="author">
+        <img class="avatar" alt="" width="40" height="40" referrerpolicy="no-referrer" />
+        <div><div class="name"></div><a class="handle" target="_blank" rel="noopener"></a></div>
+      </div>
+      <p class="text"></p>
+      <div class="media-list"></div>
+    </article>
+  </template>
+
+  <template id="tpl-media">
+    <div class="media">
+      <div class="preview"></div>
+      <div class="controls">
+        <div class="row">
+          <span class="badge"></span>
+          <label class="quality-wrap">Quality <select class="quality"></select></label>
+        </div>
+        <button class="primary btn big dl-gif" type="button">Download GIF</button>
+        <p class="gif-note" aria-live="polite"></p>
+        <div class="row actions">
+          <a class="ghost btn download" download>MP4</a>
+          <button class="ghost btn dl-webp" type="button" title="Animated WebP: about a third of the size, so it stays sharper">WebP</button>
+          <button class="ghost btn copy" type="button">Copy link</button>
+        </div>
+
+        <details class="gif-panel">
+          <summary>Customize &amp; presets</summary>
+          <label class="full">Preset
+            <select class="g-preset"></select></label>
+          <div class="grid">
+            <label>Format
+              <select class="g-format">
+                <option value="gif" selected>GIF</option>
+                <option value="webp">WebP (smaller, sharper)</option>
+              </select></label>
+            <label>Max size
+              <select class="g-max">
+                <option value="262144">256 KB</option>
+                <option value="512000">500 KB</option>
+                <option value="2097152">2 MB</option>
+                <option value="5242880" selected>5 MB</option>
+                <option value="10485760">10 MB</option>
+                <option value="15728640">15 MB</option>
+              </select></label>
+            <label>Shape
+              <select class="g-fit">
+                <option value="none" selected>Original</option>
+                <option value="square">Square crop</option>
+                <option value="sticker">Sticker (512×512)</option>
+              </select></label>
+            <label>Width
+              <select class="g-width">
+                <option value="0" selected>Original</option>
+                <option value="128">128px (emoji)</option>
+                <option value="320">320px</option>
+                <option value="480">480px</option>
+                <option value="640">640px</option>
+              </select></label>
+            <label>Frame rate
+              <select class="g-fps">
+                <option value="0" selected>Original</option>
+                <option value="10">10 fps</option>
+                <option value="15">15 fps</option>
+                <option value="24">24 fps</option>
+                <option value="30">30 fps</option>
+              </select></label>
+            <label>Speed
+              <select class="g-speed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.5">1.5×</option>
+                <option value="2">2×</option>
+              </select></label>
+            <label>Start (s)
+              <span class="inline"><input type="number" class="g-start" min="0" step="0.1" value="0" />
+              <button type="button" class="link set-start" title="Use current video position">now</button></span></label>
+            <label>End (s)
+              <span class="inline"><input type="number" class="g-end" min="0" step="0.1" />
+              <button type="button" class="link set-end" title="Use current video position">now</button></span></label>
+            <label class="check"><input type="checkbox" class="g-reverse" /> Reverse</label>
+          </div>
+          <button type="button" class="primary btn make-gif">Create</button>
+          <p class="g-status" aria-live="polite"></p>
+          <div class="g-out" hidden>
+            <img class="g-img" alt="Preview of the created file" />
+            <div class="row actions">
+              <a class="primary btn g-save">Save</a>
+              <button type="button" class="ghost btn g-copy">Copy GIF</button>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </template>
+
+  <script src="/app.js?v=8" type="module"></script>
+</body>
+</html>
