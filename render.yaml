@@ -11,9 +11,8 @@ services:
     buildCommand: npm ci --omit=dev
     startCommand: npm start
     healthCheckPath: /healthz
-    domains:
-      - gifpocket.fun
-      - www.gifpocket.fun
+    # Custom domains (gifpocket.fun, www.gifpocket.fun) are added in the dashboard:
+    # Service → Settings → Custom Domains. Adding them here made the Blueprint sync fail.
     envVars:
       - key: NODE_ENV
         value: production
